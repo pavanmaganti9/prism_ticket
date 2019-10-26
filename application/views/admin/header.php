@@ -58,7 +58,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="<?php echo base_url('admin/dashboard'); ?>">Project v2.0</a>
-				<?php //echo $user['email'];?>
+				<?php //echo $_SESSION['email'];?>
             </div>
             <!-- /.navbar-header -->
 

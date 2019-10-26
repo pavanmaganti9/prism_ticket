@@ -44,12 +44,14 @@
 					
                     <div class="panel-body">
 					<?php  
-						if(!empty($success_msg)){ 
-							echo '<p class="status-msg success">'.$success_msg.'</p>'; 
-						}elseif(!empty($error_msg)){ 
-							echo '<p class="status-msg error">'.$error_msg.'</p>'; 
-						} 
-					?>
+					if($this->session->flashdata('message')){
+					?>	
+						<div class="alert alert-danger" role="alert">
+					<?php	echo $this->session->flashdata('message'); ?>
+						
+						</div>
+				<?php	}
+				?>
                         <form role="form" method="post">
 						
 <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />

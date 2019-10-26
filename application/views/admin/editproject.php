@@ -6,7 +6,7 @@
                     <h1 class="page-header">Add a project</h1>
 					<div class="pull-right">
 		
-        <a href="projects" class="btn btn-default-btn-xs btn-success"> Back to projects</a>
+        <a href="../projects" class="btn btn-default-btn-xs btn-success"> Back to projects</a>
     </div>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -26,7 +26,7 @@
 			<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                                         <div class="form-group">
 							<label for="title">Title</label>
-							<input type="text" id="title" class="form-control" name="title"  value="<?php echo set_value('title'); ?>">
+							<input type="text" id="title" class="form-control" name="title"  value="<?php echo !empty($post['title'])?$post['title']:''; ?>">
                 <?php echo form_error('title','<p class="help-block" style="color:red;">','</p>'); ?>
 						</div>
                         <div class="form-group">

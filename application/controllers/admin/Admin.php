@@ -106,7 +106,7 @@ class Admin extends CI_Controller {
  
     public function adduser(){ 
         $data = array(); 
-        if($this->isUserLoggedIn){ 
+        //if($this->isUserLoggedIn){ 
 			$id = $this->session->userdata('userId');
 			$data['title'] = 'Add Users';
             //$data = $userData = array(); 
@@ -174,9 +174,9 @@ class Admin extends CI_Controller {
             //$this->load->view('admin/header', $data); 
             $this->load->view('admin/adduser', $data); 
             //$this->load->view('admin/footer'); 
-        }else{ 
+        /* }else{ 
             redirect('admin'); 
-        } 
+        }  */
     }
     
     // Existing email check during validation 
