@@ -10,6 +10,7 @@ class Home extends CI_Controller {
         $this->load->library('form_validation'); 
         $this->load->model('Admins'); 
          $this->load->model('User_model');
+		$this->load->model('Admin_model');
         // User login status 
         $this->isUserLoggedIn = $this->session->userdata('isUserLoggedIn'); 
     } 
@@ -51,18 +52,15 @@ class Home extends CI_Controller {
                     $data['error_msg'] = 'Some problems occured, please try again.'; 
                 } 
             }else{ 
-                $data['error_msg'] = 'Please fill all the mandatory fields.'; 
+			    //$data['error_msg'] = 'Please fill all the mandatory fields.'; 
             } 
         } 
          
         // Posted data 
-        $data['user'] = $userData; 
-         
+        //$data['user'] = $userData; 
+        $data['user'] = $this->Admin_model->getallcompanies(); 
         // Load view 
-        /* $this->load->view('elements/header', $data); 
-        $this->load->view('users/registration', $data); 
-        $this->load->view('elements/footer'); */
-		$this->load->view('register');
+		$this->load->view('register',$data);
 	}
 	
 	// Existing email check during validation 

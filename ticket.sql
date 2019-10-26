@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2019 at 07:10 AM
+-- Generation Time: Oct 26, 2019 at 08:54 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -19,6 +19,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `ticket`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `company`
+--
+
+CREATE TABLE IF NOT EXISTS `company` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL,
+  `logo` varchar(50) NOT NULL,
+  `desc` text NOT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `company`
+--
+
+INSERT INTO `company` (`id`, `title`, `logo`, `desc`, `created`) VALUES
+(2, 'Pavan5w', '1572112807-google.png', 'asd', '2019-10-26 20:00:07'),
+(3, 'Pavan5', '1572112867-1.jpg', 'qwe', '2019-10-26 20:01:07');
 
 -- --------------------------------------------------------
 
@@ -60,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
 --
 
 INSERT INTO `projects` (`id`, `title`, `desc`, `created`) VALUES
-(1, 'Python Tutorial123', 'qweqweqwe12', '2019-10-26 06:01:37');
+(1, 'Python Tutorial123', 'qweqweqwe12345', '2019-10-26 06:01:37');
 
 -- --------------------------------------------------------
 

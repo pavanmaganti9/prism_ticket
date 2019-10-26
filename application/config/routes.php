@@ -70,3 +70,6 @@ $route['admin/projects'] = 'admin/User/projects';
 $route['admin/addproject'] = 'admin/User/addproject';
 $route['admin/editproject/(:num)'] = 'admin/User/editproject/$1';
 $route['admin/deleteproject/(:num)'] = 'admin/User/deleteproject/$1';
+$route['admin/addcompany'] = 'admin/User/addcompany';
+$route['admin/company'] = 'admin/User/companies';
+$route['admin/deletecompany/(:num)'] = 'admin/User/deletecompany/$1';

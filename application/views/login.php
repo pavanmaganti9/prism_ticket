@@ -39,3 +39,42 @@
     
   </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#email-error").css({'display': 'none', 'color': 'red'});
+        $("#inputUsernameEmail").keyup(function () {
+            var emailValue = $("#inputUsernameEmail"); // This is a bit naughty BUT you should always define the DOM element as a var so it only looks it up once
+            var tokenValue = $("input[name='csrf_token_name']");
+//            console.log('The Email length is ' + emailValue.val().length);
+            if (emailValue.val().length >= 0 || emailValue.val() !== '') {
+//                console.log('Token is ' + tokenValue.val()); // Now why is this not getting the coorect value?? It should
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url('login'); ?>",
+                    data: {
+                        '<?php echo $this->security->get_csrf_token_name(); ?>': tokenValue.val(),
+                        email: $("#inputUsernameEmail").val()
+                    },
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+//                        console.log('The returned DATA is ' + JSON.stringify(data));
+//                        console.log('The returned token is ' + data.token);
+                        tokenValue.val(data.token);
+                        if (data.response == false) {
+                            $("#email-error").css({'display': 'none'});
+                            $(".form-error").css({'border': '', 'background-color': '', 'color': ''});
+                            document.getElementById("loginSubmit").disabled = false;
+                        } else {
+                            $("#email-error").css({'display': 'inline', 'font-size': '12px'});
+                            $(".form-error").css({'border': '1px solid red', 'background-color': 'rgba(255, 0, 0, 0.17)', 'color': 'black'});
+                            document.getElementById("loginSubmit").disabled = true;
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

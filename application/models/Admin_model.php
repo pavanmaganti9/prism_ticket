@@ -66,6 +66,38 @@ class Admin_model extends CI_MODEL{
             return $query->row_array();
     }
 	
+	public function insertcompany($data = array()) { 
+        if(!empty($data)){ 
+            // Add created and modified date if not included 
+            if(!array_key_exists("created", $data)){ 
+                $data['created'] = date("Y-m-d H:i:s"); 
+            }   
+            // Insert project data 
+            $insert = $this->db->insert('company', $data); 
+             
+            // Return the status 
+            return $insert?$this->db->insert_id():false; 
+        } 
+        return false; 
+    }
+	function getallcompanies($id = ""){
+        if(!empty($id)){
+            $query = $this->db->get_where('company', array('id' => $id));
+            return $query->row_array();
+        }else{
+			$this->db->select('*');
+			$this->db->order_by("created","desc");
+			$this->db->from('company');
+			$query=$this->db->get();
+            return $query->result_array();
+        }
+    }
+	
+	public function deletecompany($id){
+        $delete = $this->db->delete('company',array('id'=>$id));
+        return $delete;
+    }
+	
 }
 
 ?>

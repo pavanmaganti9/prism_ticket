@@ -167,6 +167,102 @@ class User extends CI_Controller {
         redirect('admin/projects');
     }
 	
+	public function companies(){ 
+        $data = array(); 
+        if($this->session->userdata('email')){  
+			$id = $this->session->userdata('id');
+			$data['title'] = 'Company';
+            $data['user'] = $this->Admin_model->getallcompanies(); 
+            $data['sess'] = $this->Admin_model->getuser($this->session->userdata('id'));
+            $this->load->view('admin/companies', $data);  
+        }else{ 
+            redirect('admin'); 
+        } 
+    }
+	
+	public function addcompany(){ 
+        $data = array(); 
+        if($this->session->userdata('email')){ 
+			//$id = $this->session->userdata('id');
+			$data['title'] = 'Add Project';
+			
+			if($this->input->post('companySubmit')){ 
+			$this->form_validation->set_rules('title', 'Name', 'required|xss_clean|is_unique[company.title]');
+            $this->form_validation->set_rules('desc', 'Description', 'required|xss_clean'); 
+			if (empty($_FILES['clogo']['name']))
+			{
+				$this->form_validation->set_rules('clogo', 'Logo', 'required');
+			}
+			
+
+			if($this->form_validation->run() == FALSE){
+				
+				$this->load->view('admin/addcompany', $data);
+				
+			}else{
+				$image = time().'_'.$_FILES["clogo"]['name'];
+				
+				//$config = array(
+				$config['upload_path'] = './assets/companylogo/';
+                $config['allowed_types']        = 'gif|jpg|png|pdf|doc';
+                $config['max_size']             = 100000;
+                $config['max_width']            = 100000;
+                $config['max_height']           = 100000;
+				$config['file_name'] = $image;
+				//);
+				$this->load->library('upload', $config); 
+				
+				if($this->upload->do_upload('clogo'))
+				{
+					//$res['msg']="Image has been uploaded!";
+					//$this->load->view('image', $res);
+				}
+				else
+				{
+					
+					//$this->load->view('image');
+				}
+				
+				$companyData = array( 
+                'title' => strip_tags($this->security->xss_clean($this->input->post('title'))), 
+                'desc' => strip_tags($this->security->xss_clean($this->input->post('desc'))),
+				'logo' => strip_tags($this->security->xss_clean($image))				
+            );
+				$insert = $this->Admin_model->insertcompany($companyData);
+				if($insert){
+					
+				$this->session->set_flashdata('message', 'Company added successfully');					
+                    //$this->session->set_flashdata('message', 'Your account registration has been successful. Please login to your account.'); 
+                    redirect('admin/addcompany'); 
+                }else{ 
+                    $this->session->set_flashdata('message', 'Invalid email or password');
+                }
+			}			
+		}else{
+		$this->load->view('admin/addcompany', $data);
+		}
+		}else{ 
+            redirect('admin'); 
+        } 
+		
+	}
+	
+	public function deletecompany($id){
+        //check whether post id is not empty
+        if($id){
+            //delete post
+            $delete = $this->Admin_model->deletecompany($id);
+            
+            if($delete){
+                $this->session->set_userdata('success_msg', 'Project has been removed successfully.');
+            }else{
+                $this->session->set_userdata('error_msg', 'Some problems occurred, please try again.');
+            }
+        }
+
+        redirect('admin/company');
+    }
+	
 	public function adduser(){ 
         $data = array(); 
         if($this->session->userdata('email')){ 

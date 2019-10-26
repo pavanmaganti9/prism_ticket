@@ -57,7 +57,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo base_url('admin/dashboard'); ?>">Project v2.0</a>
+                <a class="navbar-brand" href="<?php echo base_url('admin/dashboard'); ?>">Prism Ticketing System</a>
 				<?php //echo $_SESSION['email'];?>
             </div>
             <!-- /.navbar-header -->
@@ -292,6 +292,9 @@
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/projects'); ?>"><i class="fa fa-wrench fa-fw"></i> Project</a>
+                        </li>
+						<li>
+                            <a href="<?php echo base_url('admin/company'); ?>"><i class="fa fa-wrench fa-fw"></i> Company</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/users'); ?>"><i class="fa fa-table fa-fw"></i> Users</a>
