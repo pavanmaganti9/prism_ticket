@@ -61,11 +61,6 @@ class Admin_model extends CI_MODEL{
         return $delete;
     }
 	
-	function getuser($id){
-            $query = $this->db->get_where('users', array('id' => $id));
-            return $query->row_array();
-    }
-	
 	public function insertcompany($data = array()) { 
         if(!empty($data)){ 
             // Add created and modified date if not included 
@@ -92,10 +87,72 @@ class Admin_model extends CI_MODEL{
             return $query->result_array();
         }
     }
+	public function updatecompany($data, $id) {
+		
+        if(!empty($data) && !empty($id)){
+            $update = $this->db->update('company', $data, array('id'=>$id));
+            return $update;
+        }else{
+            return false;
+        }
+    }
 	
 	public function deletecompany($id){
         $delete = $this->db->delete('company',array('id'=>$id));
         return $delete;
+    }
+	
+	function getallusers($id = ""){
+        if(!empty($id)){
+            $query = $this->db->get_where('users', array('id' => $id));
+            return $query->row_array();
+        }else{
+			$this->db->select('*');
+			//$this->db->where('tennant_id',$tennant_id);
+			$this->db->order_by("created","desc");
+			$this->db->from('users');
+			$query=$this->db->get();
+            return $query->result_array();
+        }
+    }
+	
+	function getuser($id){
+            $query = $this->db->get_where('users', array('id' => $id));
+            return $query->row_array();
+    }
+	
+	public function insertuser($data = array()) { 
+        if(!empty($data)){ 
+            // Add created and modified date if not included 
+            if(!array_key_exists("created", $data)){ 
+                $data['created'] = date("Y-m-d H:i:s"); 
+            } 
+            if(!array_key_exists("modified", $data)){ 
+                $data['modified'] = date("Y-m-d H:i:s"); 
+            } 
+             
+            // Insert member data 
+            $insert = $this->db->insert('users', $data); 
+             
+            // Return the status 
+            return $insert?$this->db->insert_id():false; 
+        } 
+        return false; 
+    }
+	public function updateuser($data, $id) {
+        if(!empty($data) && !empty($id)){
+            $update = $this->db->update('users', $data, array('id'=>$id));
+            return $update;
+			$this->db->last_query();
+        }else{
+            return false;
+        }
+    }
+	
+	function getdocs($id){
+		
+            $query = $this->db->get_where('userfileuploads', array('user_id' => $id));
+            return $query->result_array();
     }
 	
 }

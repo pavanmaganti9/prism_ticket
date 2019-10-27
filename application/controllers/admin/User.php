@@ -8,7 +8,7 @@ class User extends CI_Controller {
         // Load form validation ibrary & user model 
         //$this->load->library('form_validation'); 
         $this->load->model('Admin_model'); 
-         
+         $this->load->model('User_model'); 
         // User login status 
         //$this->isUserLoggedIn = $this->session->userdata('isUserLoggedIn'); 
     }
@@ -263,6 +263,25 @@ class User extends CI_Controller {
         redirect('admin/company');
     }
 	
+	public function getusers(){ 
+        $data = array(); 
+        if($this->session->userdata('email')){ 
+            /* $con = array( 
+                'id' => $this->session->userdata('userId') 
+            ); */ 
+			$id = $this->session->userdata('id');
+			$data['title'] = 'Get Users';
+            $data['user'] = $this->Admin_model->getallusers(); 
+            $data['sess'] = $this->Admin_model->getuser($id);
+            // Pass the user data and load view 
+            //$this->load->view('admin/header', $data); 
+            $this->load->view('admin/tables', $data); 
+            //$this->load->view('admin/footer'); 
+        }else{ 
+           // redirect('admin/login'); 
+        } 
+    }
+	
 	public function adduser(){ 
         $data = array(); 
         if($this->session->userdata('email')){ 
@@ -274,22 +293,22 @@ class User extends CI_Controller {
         if($this->input->post('signupSubmit')){ 
             $this->form_validation->set_rules('first_name', 'First Name', 'required'); 
             $this->form_validation->set_rules('last_name', 'Last Name', 'required'); 
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check'); 
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]'); 
             $this->form_validation->set_rules('password', 'Password', 'required'); 
 			$this->form_validation->set_rules('phone', 'Phone', 'required'); 
             $this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]'); 
 		$userData = array( 
-                'first_name' => strip_tags($this->input->post('first_name')), 
-                'last_name' => strip_tags($this->input->post('last_name')), 
-                'email' => strip_tags($this->input->post('email')), 
-                'password' => md5($this->input->post('password')), 
-                'gender' => $this->input->post('gender'), 
-                'phone' => strip_tags($this->input->post('phone')),
+				'first_name' => strip_tags($this->security->xss_clean($this->input->post('first_name'))), 
+                'last_name' => strip_tags($this->security->xss_clean($this->input->post('last_name'))), 
+                'email' => strip_tags($this->security->xss_clean($this->input->post('email'))), 
+                'password' => md5($this->security->xss_clean($this->input->post('password'))), 
+                'gender' => $this->security->xss_clean($this->input->post('gender')), 
+                'phone' => strip_tags($this->security->xss_clean($this->input->post('phone'))),
 				'user_type' => 'user'				
             ); 
  
             if($this->form_validation->run() == true){ 
-                $insert = $this->Admins->insert($userData); 
+                $insert = $this->Admin_model->insertuser($userData); 
 				
 				$config = Array(
 					'protocol' => 'smtp',
@@ -310,17 +329,17 @@ class User extends CI_Controller {
 				
 				$this->email->initialize($config);
 
-				$this->email->from('mds@gmail.com', 'MDS');
+				$this->email->from('mds@gmail.com', 'Manidweepam');
 				$this->email->to($this->input->post('email')); 
 
-				$this->email->subject('User Registration');
-				$this->email->message('Testing the email class.');  
+				$this->email->subject('Prism User Registration');
+				$this->email->message('hi thanks for registering with Prism.<br>Your username : '.$this->input->post('email').'and  password : '.$this->input->post('password'));  
 
 				$this->email->send();
 
 				
                 if($insert){ 
-                    $this->session->set_userdata('success_msg', 'Your account registration has been successful. Please login to your account.'); 
+                    $this->session->set_flashdata('message', 'User account registration has been successful.'); 
                     redirect('admin/adduser'); 
                 }else{ 
                     $data['error_msg'] = 'Some problems occured, please try again.'; 
@@ -336,6 +355,91 @@ class User extends CI_Controller {
         }else{ 
             redirect('admin'); 
         }
+    }
+	
+	public function edituser($id){
+        $data = array();
+        
+        //get post data
+        $postData = $this->Admin_model->getuser($id);
+        
+        //if update request is submitted
+        if($this->input->post('userSubmit')){
+            //form field validation rules
+            $this->form_validation->set_rules('first_name', 'First Name', 'required'); 
+            
+            //prepare cms page data
+            $postData = array(
+                'first_name' => $this->input->post('first_name')
+            );
+            
+			if($this->form_validation->run() == FALSE){
+				
+				//$this->load->view('admin/editproject/'.$id, $data);
+			}else{
+				$update = $this->Admin_model->updateuser($postData, $id);
+				if($update){
+                    $this->session->set_flashdata('message', 'User has been updated successfully.');
+                    redirect('admin/edituser/'.$id);
+                }else{
+					$this->session->set_flashdata('message', 'User has been updated successfully.');
+                    //$data['error_msg'] = 'Some problems occurred, please try again.';
+                }
+			}
+			
+        }
+     
+        $data['post'] = $postData;
+        $data['title'] = 'Update User';
+        $data['action'] = 'Edit';
+        $data['docs'] = $this->Admin_model->getdocs($id);
+		
+        //load the edit page view
+        $this->load->view('admin/edituser', $data);
+    }
+	
+	public function editcompany($id){
+        $data = array();
+        
+        //get post data
+        $postData = $this->Admin_model->getallcompanies($id);
+        
+        //if update request is submitted
+        if($this->input->post('projectSubmit')){
+            //form field validation rules
+			$this->form_validation->set_rules('title', 'Title', 'required|xss_clean'); 
+            $this->form_validation->set_rules('desc', 'Description', 'required|xss_clean'); 
+            
+            //prepare cms page data
+			$postData = array( 
+                'title' => strip_tags($this->security->xss_clean($this->input->post('title'))), 
+                'desc' => strip_tags($this->security->xss_clean($this->input->post('desc')))				
+            );
+			
+			if($this->form_validation->run() == FALSE){
+				
+				//$this->load->view('admin/editproject/'.$id, $data);
+				
+			}else{
+				$update = $this->Admin_model->updatecompany($postData, $id);
+				if($update){
+                    $this->session->set_flashdata('message', 'Company has been updated successfully.');
+                    redirect('admin/editcompany/'.$id);
+                }else{
+					$this->session->set_flashdata('message', 'Project has been updated successfully.');
+                    //$data['error_msg'] = 'Some problems occurred, please try again.';
+                }
+			}
+                        
+        }
+
+        
+        $data['post'] = $postData;
+        $data['title'] = 'Edit Company';
+        $data['action'] = 'Edit';
+        
+        //load the edit page view
+        $this->load->view('admin/editcompany', $data);
     }
 
 	public function logout(){ 

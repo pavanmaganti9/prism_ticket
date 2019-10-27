@@ -44,7 +44,7 @@
                                             <td><?php echo $post['desc']; ?></td>
                                             <td class="center"><?php echo $post['created']; ?></td>
 											<td align="center">
-											<a href="<?php echo site_url('admin/editproject/'.$post['id']); ?>" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;
+											<a href="<?php echo site_url('admin/editcompany/'.$post['id']); ?>" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;
 											<?php if($user_type == 'superadmin'){?>
 											<a href="<?php echo site_url('admin/deletecompany/'.$post['id']); ?>" class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure to delete?')"></a><?php } ?>
 										</td>

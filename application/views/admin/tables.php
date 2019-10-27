@@ -46,7 +46,7 @@
                                             <td class="center"><?php echo $post['phone']; ?></td>
                                             <td class="center"><?php echo $post['created']; ?></td>
 											<td align="center">
-											<a href="<?php echo site_url('posts/edit/'.$post['id']); ?>" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;
+											<a href="<?php echo site_url('admin/edituser/'.$post['id']); ?>" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;
 											<?php if($user_type == 'superadmin'){?>
 											<a href="<?php echo site_url('posts/delete/'.$post['id']); ?>" class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure to delete?')"></a><?php } ?>
 										</td>

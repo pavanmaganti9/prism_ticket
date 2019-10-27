@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Ticketing System</title>
+  <title>Prism Ticketing System</title>
 
   <!-- Bootstrap core CSS -->
   <link href="<?php echo base_url(); ?>assets/frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -35,13 +35,21 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
+          
+          
 		  <?php if(isset($_SESSION['email'])){?>
+		  <li class="nav-item">
+            <a class="nav-link" href="#">Tickets</a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="company">About Company</a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="uploads">Upload Docs</a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="profile">View Profile</a>
+          </li>
 		  <li class="nav-item">
             <a class="nav-link" href="logout">Logout</a>
           </li>
@@ -53,9 +61,6 @@
             <a class="nav-link" href="register">Register</a>
           </li>
 		  <?php } ?>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
         </ul>
       </div>
     </div>
