@@ -17,6 +17,8 @@
 					echo form_open("login",$attributes);
 					?>
       <!--<form role="form" method="post">-->
+	  
+	  <input type="hidden" name="prismtoken" value="<?php echo $token;?>">
         <div class="form-group">
           <label for="inputUsernameEmail">Email</label>
           <input type="text" name="email" class="form-control" id="inputUsernameEmail">

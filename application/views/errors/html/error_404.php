@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>404 Page Not Found</title>
+<title>404 Page Not Found | Prism Ticketing System</title>
 <style type="text/css">
 
 ::selection { background-color: #E13300; color: white; }
@@ -56,9 +56,16 @@ p {
 </style>
 </head>
 <body>
+<?php 
+
+$ci = new CI_Controller();
+$ci =& get_instance();
+
+?>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
+		<h1>Prism Ticketing System 404 Page Not Found<?php //echo $heading; ?></h1>
+		<div align="center"><?php echo $message; ?>Go to <a href="<?php echo base_url();?>">home</a></div>
+		<br>
 	</div>
 </body>
 </html>

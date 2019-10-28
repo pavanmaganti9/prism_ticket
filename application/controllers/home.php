@@ -206,28 +206,30 @@ class Home extends CI_Controller {
         $this->form_validation->set_rules('password', 'password', 'required'); 
 		
 		if($this->form_validation->run() == FALSE){
-			
-			$this->load->view('login');
+			$data['token'] = $this->auth->token();
+			$this->load->view('login',$data);
 			
 		}else{
 			$email = $this->security->xss_clean($this->input->post('email'));
 			$password = $this->security->xss_clean(md5($this->input->post('password')));
 			
-			$user = $this->User_model->login($email,$password);
-			if($user){
-				$userdata = array(
-					'id' => $user->id,
-					'first_name' => $user->first_name,
-					'last_name' => $user->last_name,
-					'email' => $user->email,
-					'authenticated' => TRUE
-				);
-				
-				$this->session->set_userdata($userdata);
-				redirect('home');
-			}else{
-				$this->session->set_flashdata('message', 'Invalid email or password');
-				redirect('login');
+			if($this->input->post('prismtoken') == $this->session->userdata('token')){
+				$user = $this->User_model->login($email,$password);
+				if($user){
+					$userdata = array(
+						'id' => $user->id,
+						'first_name' => $user->first_name,
+						'last_name' => $user->last_name,
+						'email' => $user->email,
+						'authenticated' => TRUE
+					);
+					
+					$this->session->set_userdata($userdata);
+					redirect('home');
+				}else{
+					$this->session->set_flashdata('message', 'Invalid email or password');
+					redirect('login');
+				}
 			}
 		}
              
