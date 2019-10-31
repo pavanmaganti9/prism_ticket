@@ -8,9 +8,14 @@ class Admin_model extends CI_MODEL{
 		$this->db->where('email', $email);
 		$this->db->where('password', $password);
 		$this->db->where('status', 1);
+		//$this->db->where('user_type', 'admin');
+		$type = array('admin', 'superadmin');
+		$this->db->where_in('user_type', $type);
 		$query = $this->db->get('users');
-		//print_r($query);
-		if($query->num_rows() == 1){
+		
+		$sql = $this->db->last_query();
+		//print_r($sql); die();
+		if($query->num_rows() > 0){
 			return $query->row();
 		}
 		return false;
@@ -153,6 +158,11 @@ class Admin_model extends CI_MODEL{
 		
             $query = $this->db->get_where('userfileuploads', array('user_id' => $id));
             return $query->result_array();
+    }
+	
+	function getusertrumail($email){
+            $query = $this->db->get_where('users', array('email' => $email));
+            return $query->row_array();
     }
 	
 }

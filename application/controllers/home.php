@@ -230,6 +230,8 @@ class Home extends CI_Controller {
 					$this->session->set_flashdata('message', 'Invalid email or password');
 					redirect('login');
 				}
+			}else{
+				redirect('login');
 			}
 		}
              

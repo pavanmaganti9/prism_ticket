@@ -89,10 +89,29 @@
 				echo "No Documents Uploaded!";
 			}?>
             </div>
+			<div class="form-group">
+			<label for="role">Role</label>
+			<select name="role" class="form-control">
+			 <option>---Select Role---</option>
+			 <option value="superadmin" <?php if($post['user_type'] == 'superadmin'){ echo "selected";} ?>>Super Admin</option>
+			 <option value="admin" <?php if($post['user_type'] == 'admin'){ echo "selected";} ?>>Admin</option>
+			 <option value="user" <?php if($post['user_type'] == 'user'){ echo "selected";} ?>>User</option>
+			</select>
+						</div>
+						<div class="form-group">
+			<label for="company">Company</label>
+			<select name="company" class="form-control">
+ <option>---Select Company---</option>
+ <option value="<?php echo $post['company'];?>" selected> <?php echo $post['company'];?></option>
+ <?php foreach($user as $post): ?>
+<option value="<?php echo $post['title'];?>"> <?php echo $post['title'];?></option>
+<?php endforeach;?>
+</select>
+			</div>
             
-						<!--<div class="form-group text-center">
+						<div class="form-group text-center">
 						<input type="submit" name="userSubmit" class="btn btn-primary btn-lg" value="Update User">
-                        </div>-->
+                        </div>
 
 										</form>
 										</div></div>

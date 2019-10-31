@@ -54,7 +54,7 @@
 				?>
                         <form role="form" method="post">
 						
-<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
+					<input type="hidden" name="prismadmintoken" value="<?php echo $token;?>">
 
                             <fieldset>
                                 <div class="form-group">

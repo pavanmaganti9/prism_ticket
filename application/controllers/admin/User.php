@@ -13,25 +13,31 @@ class User extends CI_Controller {
         //$this->isUserLoggedIn = $this->session->userdata('isUserLoggedIn'); 
     }
 
-	public function login(){ 
+	public function login(){
+	
+			
 	$data['title'] = 'Login';
+	//$this->load->view('admin/login',$data);
 	
 	$this->form_validation->set_rules('email', 'Email', 'required|valid_email'); 
     $this->form_validation->set_rules('password', 'password', 'required'); 
 	if($this->form_validation->run() == FALSE){
-			
+			$data['token'] = $this->auth->token();
 			$this->load->view('admin/login',$data);
 			
 		}else{
+			if($this->input->post('prismadmintoken') == $this->session->userdata('token')){
 			$email = $this->security->xss_clean($this->input->post('email'));
 			$password = $this->security->xss_clean(md5($this->input->post('password')));
 			$user = $this->Admin_model->login($email,$password);
-			if($user){
+			
+			if(!empty($user)){
 				$userdata = array(
 					'id' => $user->id,
 					'first_name' => $user->first_name,
 					'last_name' => $user->last_name,
 					'email' => $user->email,
+					'type' => $user->user_type,
 					'authenticated' => TRUE
 				);
 				
@@ -39,6 +45,9 @@ class User extends CI_Controller {
 				redirect('admin/dashboard');
 			}else{
 				$this->session->set_flashdata('message', 'Invalid email or password');
+				redirect('admin');
+			}
+			}else{
 				redirect('admin');
 			}
 			$this->load->view('admin/login',$data);
@@ -285,6 +294,7 @@ class User extends CI_Controller {
 	public function adduser(){ 
         $data = array(); 
         if($this->session->userdata('email')){ 
+			if($this->session->userdata('type') == 'admin'){ 
 			$id = $this->session->userdata('userId');
 			$data['title'] = 'Add Users';
             //$data = $userData = array(); 
@@ -352,6 +362,9 @@ class User extends CI_Controller {
             //$this->load->view('admin/header', $data); 
             $this->load->view('admin/adduser', $data); 
             //$this->load->view('admin/footer'); 
+			}else{
+				redirect('admin/dashboard');
+			}
         }else{ 
             redirect('admin'); 
         }
@@ -366,11 +379,22 @@ class User extends CI_Controller {
         //if update request is submitted
         if($this->input->post('userSubmit')){
             //form field validation rules
-            $this->form_validation->set_rules('first_name', 'First Name', 'required'); 
+            $this->form_validation->set_rules('first_name', 'First Name', 'required');
+			$this->form_validation->set_rules('last_name', 'Last Name', 'required');
+			//$this->form_validation->set_rules('password', 'Password', 'required');
+			//$this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]');
+			$this->form_validation->set_rules('phone', 'Phone', 'required');
+			$this->form_validation->set_rules('role', 'UserRole', 'required');
+			
             
             //prepare cms page data
             $postData = array(
-                'first_name' => $this->input->post('first_name')
+                'first_name' => $this->security->xss_clean($this->input->post('first_name')),
+				'last_name' => $this->security->xss_clean($this->input->post('last_name')),
+				//'password' => $this->security->xss_clean($this->input->post('password')),
+				'phone' => $this->security->xss_clean($this->input->post('phone')),
+				'user_type' => $this->security->xss_clean($this->input->post('role')),
+				'company' => $this->security->xss_clean($this->input->post('company'))
             );
             
 			if($this->form_validation->run() == FALSE){
@@ -388,7 +412,7 @@ class User extends CI_Controller {
 			}
 			
         }
-     
+        $data['user'] = $this->Admin_model->getallcompanies(); 
         $data['post'] = $postData;
         $data['title'] = 'Update User';
         $data['action'] = 'Edit';

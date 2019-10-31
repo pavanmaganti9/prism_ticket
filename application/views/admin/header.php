@@ -96,7 +96,7 @@
                             </span>
                             </div>
                             <!-- /input-group -->
-							<?php //echo $user['email']; ?>
+							<?php //echo $_SESSION['type']; ?>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/dashboard'); ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>

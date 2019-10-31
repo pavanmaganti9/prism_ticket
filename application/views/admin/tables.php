@@ -5,8 +5,9 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Users</h1>
 					<div class="pull-right">
-		
+		<?php if($sess['user_type'] == 'admin'){?>
         <a href="adduser" class="btn btn-default-btn-xs btn-success"><i class="glyphicon glyphicon-plus"></i> Add a user</a>
+		<?php } ?>
     </div>
                 </div>
 				
@@ -29,10 +30,14 @@
                                         <tr>
                                             <th>First Name</th>
                                             <th>Last Name</th>
-                                            <th>Email(s)</th>
+                                            <th>Email</th>
                                             <th>Phone</th>
                                             <th>Created</th>
+											<?php if($sess['user_type'] == 'admin'){?>
 											<th>Actions</th>
+											<?php } else {?>
+											<th>Role</th>
+											<?php } ?>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -45,11 +50,14 @@
                                             <td><?php echo $post['email']; ?></td>
                                             <td class="center"><?php echo $post['phone']; ?></td>
                                             <td class="center"><?php echo $post['created']; ?></td>
+											
+											<?php if($user_type == 'admin'){?>
 											<td align="center">
 											<a href="<?php echo site_url('admin/edituser/'.$post['id']); ?>" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;
-											<?php if($user_type == 'superadmin'){?>
-											<a href="<?php echo site_url('posts/delete/'.$post['id']); ?>" class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure to delete?')"></a><?php } ?>
-										</td>
+											<a href="<?php echo site_url('posts/delete/'.$post['id']); ?>" class="glyphicon glyphicon-trash" onclick="return confirm('Are you sure to delete?')"></a></td><?php } else{ ?>
+											<td class="center"><?php echo $post['user_type']; ?></td>
+											<?php } ?>
+										
                                         </tr>
                                      <?php endforeach; }?>  
                                     </tbody>
