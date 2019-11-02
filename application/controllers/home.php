@@ -32,7 +32,11 @@ class Home extends CI_Controller {
             $this->form_validation->set_rules('password', 'Password', 'required'); 
 			$this->form_validation->set_rules('phone', 'Phone', 'required|regex_match[/^[0-9]{10}$/]'); 
             $this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]'); 
-			$this->form_validation->set_rules('company', 'Company', 'required'); 
+			//$this->form_validation->set_rules('company', 'Company', 'required'); 
+			if ($this->input->post())
+			{
+			$this->form_validation->set_rules('company', 'Company', 'required');	
+			}
  
             $userData = array( 
                 'first_name' => strip_tags($this->input->post('first_name')), 
