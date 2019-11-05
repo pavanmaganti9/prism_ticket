@@ -74,6 +74,7 @@
                         Female
                     </label>
                 </div>
+				
             </div>
 						<div class="form-group text-center">
 						<input type="submit" name="signupSubmit" class="btn btn-primary btn-lg" value="Add User">

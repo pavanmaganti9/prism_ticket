@@ -121,8 +121,8 @@ class Admin_model extends CI_MODEL{
         }
     }
 	
-	function getuser($id){
-            $query = $this->db->get_where('users', array('id' => $id));
+	function getuser($id,$company){
+            $query = $this->db->get_where('users', array('id' => $id,'company' => $company));
             return $query->row_array();
     }
 	
@@ -163,6 +163,17 @@ class Admin_model extends CI_MODEL{
 	function getusertrumail($email){
             $query = $this->db->get_where('users', array('email' => $email));
             return $query->row_array();
+    }
+	
+	function getallusersbycompany($company,$type){
+			if($type == 'admin'){
+            $query = $this->db->get_where('users', array('company' => $company));
+            return $query->result_array();
+			}else{
+			$query = $this->db->get('users');
+            return $query->result_array();	
+			}
+        
     }
 	
 }

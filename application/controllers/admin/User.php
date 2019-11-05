@@ -38,6 +38,7 @@ class User extends CI_Controller {
 					'last_name' => $user->last_name,
 					'email' => $user->email,
 					'type' => $user->user_type,
+					'company' => $user->company,
 					'authenticated' => TRUE
 				);
 				
@@ -72,7 +73,7 @@ class User extends CI_Controller {
 			$id = $this->session->userdata('id');
 			$data['title'] = 'Projects';
             $data['user'] = $this->Admin_model->getallprojects(); 
-            $data['sess'] = $this->Admin_model->getuser($id);
+            $data['sess'] = $this->Admin_model->getuser($id,$this->session->userdata('company'));
             $this->load->view('admin/projects', $data);  
         }else{ 
             redirect('admin'); 
@@ -182,7 +183,7 @@ class User extends CI_Controller {
 			$id = $this->session->userdata('id');
 			$data['title'] = 'Company';
             $data['user'] = $this->Admin_model->getallcompanies(); 
-            $data['sess'] = $this->Admin_model->getuser($this->session->userdata('id'));
+            $data['sess'] = $this->Admin_model->getuser($this->session->userdata('id'),$this->session->userdata('company'));
             $this->load->view('admin/companies', $data);  
         }else{ 
             redirect('admin'); 
@@ -191,7 +192,8 @@ class User extends CI_Controller {
 	
 	public function addcompany(){ 
         $data = array(); 
-        if($this->session->userdata('email')){ 
+        if($this->session->userdata('email') && $this->session->userdata('type') == 'superadmin'){
+			
 			//$id = $this->session->userdata('id');
 			$data['title'] = 'Add Project';
 			
@@ -251,7 +253,7 @@ class User extends CI_Controller {
 		$this->load->view('admin/addcompany', $data);
 		}
 		}else{ 
-            redirect('admin'); 
+            redirect('admin/dashboard'); 
         } 
 		
 	}
@@ -280,10 +282,8 @@ class User extends CI_Controller {
             ); */ 
 			$id = $this->session->userdata('id');
 			$data['title'] = 'Get Users';
-            $data['user'] = $this->Admin_model->getallusers(); 
-            $data['sess'] = $this->Admin_model->getuser($id);
-            // Pass the user data and load view 
-            //$this->load->view('admin/header', $data); 
+            $data['user'] = $this->Admin_model->getallusersbycompany($this->session->userdata('company'),$this->session->userdata('type')); 
+			$data['sess'] = $this->Admin_model->getuser($id,$this->session->userdata('company'));
             $this->load->view('admin/tables', $data); 
             //$this->load->view('admin/footer'); 
         }else{ 
@@ -298,7 +298,7 @@ class User extends CI_Controller {
 			$id = $this->session->userdata('userId');
 			$data['title'] = 'Add Users';
             //$data = $userData = array(); 
-         
+         	 
         // If registration request is submitted 
         if($this->input->post('signupSubmit')){ 
             $this->form_validation->set_rules('first_name', 'First Name', 'required'); 
@@ -307,14 +307,24 @@ class User extends CI_Controller {
             $this->form_validation->set_rules('password', 'Password', 'required'); 
 			$this->form_validation->set_rules('phone', 'Phone', 'required'); 
             $this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]'); 
+			
+			$fname = $this->security->xss_clean($this->input->post('first_name'));
+			$lname = $this->security->xss_clean($this->input->post('last_name'));
+			$email = $this->security->xss_clean($this->input->post('email'));
+			$password = $this->security->xss_clean($this->input->post('password'));
+			$gender = $this->security->xss_clean($this->input->post('gender'));
+			$phone = $this->security->xss_clean($this->input->post('phone'));
+			$company = $this->security->xss_clean($this->session->userdata('company'));
+			
 		$userData = array( 
-				'first_name' => strip_tags($this->security->xss_clean($this->input->post('first_name'))), 
-                'last_name' => strip_tags($this->security->xss_clean($this->input->post('last_name'))), 
-                'email' => strip_tags($this->security->xss_clean($this->input->post('email'))), 
-                'password' => md5($this->security->xss_clean($this->input->post('password'))), 
-                'gender' => $this->security->xss_clean($this->input->post('gender')), 
-                'phone' => strip_tags($this->security->xss_clean($this->input->post('phone'))),
-				'user_type' => 'user'				
+				'first_name' => $fname, 
+                'last_name' => $lname, 
+                'email' => $email, 
+                'password' => md5($password), 
+                'gender' => $gender, 
+                'phone' => $phone,
+				'user_type' => 'user',
+				'company' => $company
             ); 
  
             if($this->form_validation->run() == true){ 
@@ -342,14 +352,14 @@ class User extends CI_Controller {
 				$this->email->from('mds@gmail.com', 'Manidweepam');
 				$this->email->to($this->input->post('email')); 
 
-				$this->email->subject('Prism User Registration');
-				$this->email->message('hi thanks for registering with Prism.<br>Your username : '.$this->input->post('email').'and  password : '.$this->input->post('password'));  
+				$this->email->subject($company.' User Registration');
+				$this->email->message('Hi '.$fname.' '.$lname.',<br><br>Congrats for joining with '.$company.'<br><br>Your username : '.$email.' and  password : '.$password.'<br><br>Company name is '.$company.'<br><br>Click here to <a href="">Start</a><br>Thanks,<br>Prism.');  
 
 				$this->email->send();
 
 				
                 if($insert){ 
-                    $this->session->set_flashdata('message', 'User account registration has been successful.'); 
+                    $this->session->set_flashdata('message', 'User has been added successfully.'); 
                     redirect('admin/adduser'); 
                 }else{ 
                     $data['error_msg'] = 'Some problems occured, please try again.'; 
@@ -360,6 +370,7 @@ class User extends CI_Controller {
 		}			
             // Pass the user data and load view 
             //$this->load->view('admin/header', $data); 
+			//$data['company'] = $this->Admin_model->getallcompanies();
             $this->load->view('admin/adduser', $data); 
             //$this->load->view('admin/footer'); 
 			}else{
@@ -373,9 +384,9 @@ class User extends CI_Controller {
 	public function edituser($id){
         $data = array();
         
-        //get post data
-        $postData = $this->Admin_model->getuser($id);
-        
+        $company = $this->session->userdata('company');
+        $postData = $this->Admin_model->getuser($id,$company);
+        //print_r($postData);die();
         //if update request is submitted
         if($this->input->post('userSubmit')){
             //form field validation rules
@@ -465,6 +476,40 @@ class User extends CI_Controller {
         //load the edit page view
         $this->load->view('admin/editcompany', $data);
     }
+	
+	public function userprofile(){
+		$data['title'] = 'User Profile';
+		if($this->session->userdata('email')){
+		$id = $this->session->userdata('id');
+			if($this->input->post('profileSubmit')){
+				//form field validation rules
+				$this->form_validation->set_rules('password', 'Password', 'required');
+				$this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]');
+							
+				//prepare cms page data
+				$postData = array(
+					'password' => $this->security->xss_clean(md5($this->input->post('password'))),
+					);
+				
+				if($this->form_validation->run() == FALSE){
+					
+					//$this->load->view('admin/editproject/'.$id, $data);
+				}else{
+					$update = $this->Admin_model->updateuser($postData, $id);
+					if($update){
+						$this->session->set_flashdata('message', 'Password Updated successfully.');
+						//$this->load->view('admin/userprofile', $data);
+					}else{
+						$this->session->set_flashdata('message', 'User has been updated successfully.');
+						//$data['error_msg'] = 'Some problems occurred, please try again.';
+					}
+				}
+			}
+			$this->load->view('admin/userprofile', $data);
+		}else{
+			redirect('admin/dashboard');
+		}
+	}
 
 	public function logout(){ 
         $this->session->unset_userdata('userdata'); 

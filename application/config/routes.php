@@ -78,3 +78,4 @@ $route['admin/company'] = 'admin/User/companies';
 $route['admin/editcompany/(:num)'] = 'admin/User/editcompany/$1';
 $route['admin/deletecompany/(:num)'] = 'admin/User/deletecompany/$1';
 $route['admin/edituser/(:num)'] = 'admin/User/edituser/$1';
+$route['admin/userprofile'] = 'admin/User/userprofile';
