@@ -330,33 +330,10 @@ class User extends CI_Controller {
             if($this->form_validation->run() == true){ 
                 $insert = $this->Admin_model->insertuser($userData); 
 				
-				$config = Array(
-					'protocol' => 'smtp',
-					'smtp_host' => 'ssl://smtp.googlemail.com',
-					'smtp_port' => 465,
-					'smtp_user' => 'pavanmaganti87@gmail.com',
-					'smtp_pass' => 'Pavan@14357',
-					'mailtype'  => 'html', 
-					'charset'   => 'iso-8859-1'
-				);
-				$this->load->library('email', $config);
-				$this->email->set_newline("\r\n");
-
-				// Set to, from, message, etc.
-
-				$result = $this->email->send();
-
-				
-				$this->email->initialize($config);
-
-				$this->email->from('mds@gmail.com', 'Manidweepam');
-				$this->email->to($this->input->post('email')); 
-
-				$this->email->subject($company.' User Registration');
-				$this->email->message('Hi '.$fname.' '.$lname.',<br><br>Congrats for joining with '.$company.'<br><br>Your username : '.$email.' and  password : '.$password.'<br><br>Company name is '.$company.'<br><br>Click here to <a href="">Start</a><br>Thanks,<br>Prism.');  
-
-				$this->email->send();
-
+				$to = $this->input->post('email');
+				$subject = $company.' User Registration';
+				$body = 'Hi '.$fname.' '.$lname.',<br><br>Congrats for joining with '.$company.'<br><br>Your username : '.$email.' and  password : '.$password.'<br><br>Company name is '.$company.'<br><br>Click here to <a href="">Start</a><br>Thanks,<br>Prism.';
+				$this->auth->email_func($to, $subject, $body);
 				
                 if($insert){ 
                     $this->session->set_flashdata('message', 'User has been added successfully.'); 
@@ -368,9 +345,7 @@ class User extends CI_Controller {
                 //$data['error_msg'] = 'Please fill all the mandatory fields.'; 
             }
 		}			
-            // Pass the user data and load view 
-            //$this->load->view('admin/header', $data); 
-			//$data['company'] = $this->Admin_model->getallcompanies();
+            //$data['company'] = $this->Admin_model->getallcompanies();
             $this->load->view('admin/adduser', $data); 
             //$this->load->view('admin/footer'); 
 			}else{
