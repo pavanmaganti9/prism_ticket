@@ -42,7 +42,7 @@ class User_model extends CI_MODEL{
             return $query->row_array();
     }
 	
-	function getallcompanies($id = ""){
+	function getallcompanies($name = ""){
         if(!empty($name)){
             $query = $this->db->get_where('company', array('title' => $name));
             return $query->row_array();
@@ -52,6 +52,23 @@ class User_model extends CI_MODEL{
 			$this->db->from('company');
 			$query=$this->db->get();
             return $query->result_array();
+        }
+    }
+	
+	function getuseruid($uid){
+            $query = $this->db->get_where('users', array('uid' => $uid));
+            return $query->row_array();
+    }
+	
+	public function signup_updateuser($data, $uid) {
+		
+        if(!empty($data) && !empty($uid)){
+            $update = $this->db->update('users', $data, array('uid'=>$uid));
+			$str = $this->db->last_query();
+			//print_r($str); die();
+            return $update;
+        }else{
+            return false;
         }
     }
 	

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 02, 2019 at 04:51 AM
+-- Generation Time: Nov 06, 2019 at 07:44 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `company` (
   `desc` text NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `company`
@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS `company` (
 
 INSERT INTO `company` (`id`, `title`, `logo`, `desc`, `created`) VALUES
 (4, 'Google', '1572199917_google_logo.png', 'Search Engine', '2019-10-27 19:11:57'),
-(5, 'Yahoo', '1572548653_yahoo.gif', 'yahoo company shut down for its entertainment module', '2019-10-31 20:04:13');
+(5, 'Yahoo', '1572548653_yahoo.gif', 'yahoo company shut down for its entertainment module', '2019-10-31 20:04:13'),
+(6, 'Bing', '1572973368_download.png', 'bing company desc123', '2019-11-05 18:02:48');
 
 -- --------------------------------------------------------
 
@@ -118,6 +119,7 @@ INSERT INTO `userfileuploads` (`id`, `filename`, `user_email`, `user_id`, `creat
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -130,19 +132,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `company` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `gender`, `phone`, `created`, `modified`, `status`, `user_type`, `company`) VALUES
-(1, 'Pavan', 'Maganti', 'pavanmaganti9@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '8099049823', '2019-10-14 20:42:08', '2019-10-14 20:42:08', 1, 'superadmin', ''),
-(2, 'Bindu', 'Maganti', 'bindu@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Female', '9849105202', '2019-10-15 20:42:23', '2019-10-15 20:42:23', 1, 'user', 'Yahoo'),
-(3, 'qwerty', 'oiuoiu', 'oiuoiu@g.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '2345678', '2019-10-17 21:40:45', '2019-10-17 21:40:45', 1, 'user', ''),
-(4, 'laksjd', 'lkjasd', 'lkj@g.com', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'Female', '98127987123', '2019-10-17 21:42:29', '2019-10-17 21:42:29', 1, 'user', ''),
-(8, 'Pavan', 'Maganti', 'pavanmaganti87@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '1234567890', '2019-10-27 19:31:30', '2019-10-27 19:31:30', 1, 'admin', 'Google'),
-(9, 'Pavanqw', 'asd', 'pavanmaganti9@gasdmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Female', '8099049823', '2019-10-27 19:38:23', '2019-10-27 19:38:23', 1, 'user', 'Google');
+INSERT INTO `users` (`id`, `uid`, `first_name`, `last_name`, `email`, `password`, `gender`, `phone`, `created`, `modified`, `status`, `user_type`, `company`) VALUES
+(1, '', 'Pavan', 'Maganti', 'pavanmaganti9@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '8099049823', '2019-10-14 20:42:08', '2019-10-14 20:42:08', 1, 'superadmin', ''),
+(8, '', 'Pavan', 'Maganti', 'pavanmaganti87@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '1234567890', '2019-10-27 19:31:30', '2019-10-27 19:31:30', 1, 'admin', 'Google'),
+(21, 'I5Q2ir6v', 'Pavan', 'Maganti', 'pavan_maganti@yahoo.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '8099049823', '2019-11-06 18:25:10', '2019-11-06 18:25:10', 1, 'user', 'Google');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

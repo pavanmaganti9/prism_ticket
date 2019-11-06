@@ -63,6 +63,7 @@ $route['deletepost/(:num)'] = 'home/deletepost/$1';
 $route['profile'] = 'home/viewprofile';
 $route['uploads'] = 'home/uploadfiles';
 $route['company'] = 'home/company';
+$route['newsignup'] = 'home/newsignup';
 
 $route['admin'] = 'admin/User/login';
 $route['admin/logout'] = 'admin/User/logout';

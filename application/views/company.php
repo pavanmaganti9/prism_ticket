@@ -15,11 +15,11 @@
 						//print_r($company);
 					?>
 					
-					Company Name : <?php echo $company[0]['title'];?><br><br>
+					Company Name : <?php echo $company['title'];?><br><br>
 					
-					Company Logo : <img src="<?php echo base_url();?>assets/companylogo/<?php echo $company[0]['logo']; ?>" width="100"><br><br>
+					Company Logo : <img src="<?php echo base_url();?>assets/companylogo/<?php echo $company['logo']; ?>" width="100"><br><br>
 					
-					Description : <?php echo $company[0]['desc'];?><br><br>
+					Description : <?php echo $company['desc'];?><br><br>
     
     </div>
     

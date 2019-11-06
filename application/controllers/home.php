@@ -304,7 +304,7 @@ class Home extends CI_Controller {
 		if($this->session->userdata('email')){
 			$id = $this->session->userdata('id');
 			$email = $this->session->userdata('email');
-			$data['user'] = $this->Admin_model->getuser($id);
+			$data['user'] = $this->User_model->getuser($id);
 			$data['docs'] = $this->User_model->getdocs($id,$email);
 			$data['title'] = 'View Profile';
 			$this->load->view('profile', $data); 
@@ -373,6 +373,7 @@ class Home extends CI_Controller {
 			//$id = $this->session->userdata('id');
 			//$email = $this->session->userdata('email');
 			$data['user'] = $this->User_model->getuser($this->session->userdata('id'));
+			//print_r($data['user']['company']);die();
 			$data['company'] = $this->User_model->getallcompanies($data['user']['company']);
 			$data['title'] = 'View Profile';
 			$this->load->view('company', $data); 
@@ -380,6 +381,43 @@ class Home extends CI_Controller {
 			//$this->session->set_flashdata('message', 'Invalid email or password');
 			redirect('home');
 		}
+	}
+	
+	public function newsignup(){
+		$data['title'] = 'User Registration';
+		$currentURL = current_url();
+		$params   = $_SERVER['QUERY_STRING'];
+		$fullURL = $currentURL . '?' . $params;
+		$sap = explode("=",$params);
+		$uid = $sap[1];
+		$data['user'] = $this->User_model->getuseruid($uid);
+		
+		if($this->input->post('signupSubmit')){ 
+			$this->form_validation->set_rules('password', 'Password', 'required'); 
+			$this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]'); 
+			
+			$password = $this->security->xss_clean($this->input->post('password'));
+			$userData = array(  
+                'password' => md5($password),
+				'status' => 1
+            ); 
+ 
+            if($this->form_validation->run() == FALSE){
+				
+			}else{
+				$update = $this->User_model->signup_updateuser($userData, $uid);
+				//print_r($update);die();
+				if($update){
+                    $this->session->set_flashdata('message', 'Signup successfull.');
+                    //redirect('admin/editproject/'.$id);
+                }else{
+					$this->session->set_flashdata('message', 'Error while updating.');
+                    //$data['error_msg'] = 'Some problems occurred, please try again.';
+                }
+			}
+		}
+			
+		$this->load->view('newsignup', $data);
 	}
 	
 	public function logout(){ 

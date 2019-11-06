@@ -304,27 +304,31 @@ class User extends CI_Controller {
             $this->form_validation->set_rules('first_name', 'First Name', 'required'); 
             $this->form_validation->set_rules('last_name', 'Last Name', 'required'); 
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]'); 
-            $this->form_validation->set_rules('password', 'Password', 'required'); 
+            //$this->form_validation->set_rules('password', 'Password', 'required'); 
 			$this->form_validation->set_rules('phone', 'Phone', 'required'); 
-            $this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]'); 
+           // $this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]'); 
 			
 			$fname = $this->security->xss_clean($this->input->post('first_name'));
 			$lname = $this->security->xss_clean($this->input->post('last_name'));
 			$email = $this->security->xss_clean($this->input->post('email'));
-			$password = $this->security->xss_clean($this->input->post('password'));
+			//$password = $this->security->xss_clean($this->input->post('password'));
 			$gender = $this->security->xss_clean($this->input->post('gender'));
 			$phone = $this->security->xss_clean($this->input->post('phone'));
 			$company = $this->security->xss_clean($this->session->userdata('company'));
-			
+			$str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; 
+	  
+			$rand = substr(str_shuffle($str_result),  0, 8); 
 		$userData = array( 
 				'first_name' => $fname, 
                 'last_name' => $lname, 
                 'email' => $email, 
-                'password' => md5($password), 
+                'password' => '', 
                 'gender' => $gender, 
                 'phone' => $phone,
 				'user_type' => 'user',
-				'company' => $company
+				'company' => $company,
+				'status' => 0,
+				'uid' => $rand
             ); 
  
             if($this->form_validation->run() == true){ 
@@ -332,7 +336,9 @@ class User extends CI_Controller {
 				
 				$to = $this->input->post('email');
 				$subject = $company.' User Registration';
-				$body = 'Hi '.$fname.' '.$lname.',<br><br>Congrats for joining with '.$company.'<br><br>Your username : '.$email.' and  password : '.$password.'<br><br>Company name is '.$company.'<br><br>Click here to <a href="">Start</a><br>Thanks,<br>Prism.';
+				$body = 'Hi '.$fname.' '.$lname.',<br><br>Congrats for joining with '.$company.'<br><br>Your username : '.$email.' and  password : '.$password.'<br><br>Company name is '.$company.'<br><br>Click here to 
+				<a href="'.base_url().'newsignup?uid='.$rand.'">Start</a><br>Thanks,<br>Prism';
+				//.base_url().'newsignup/'.$rand.  '.base_url().'newsignup/'.$rand'
 				$this->auth->email_func($to, $subject, $body);
 				
                 if($insert){ 
@@ -485,6 +491,14 @@ class User extends CI_Controller {
 			redirect('admin/dashboard');
 		}
 	}
+	
+	function random_strings($length_of_string) 
+	{ 
+	  
+		$str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; 
+	  
+		return substr(str_shuffle($str_result),  0, $length_of_string); 
+	} 
 
 	public function logout(){ 
         $this->session->unset_userdata('userdata'); 

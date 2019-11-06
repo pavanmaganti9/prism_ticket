@@ -43,7 +43,7 @@
                 <input type="number" name="phone" class="form-control" value="<?php echo set_value('phone'); ?>" >
                 <?php echo form_error('phone','<p class="help-block" style="color:red;">','</p>'); ?>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
 			<label for="password">Password</label>
                 <input type="password" class="form-control" name="password" >
                 <?php echo form_error('password','<p class="help-block" style="color:red;">','</p>'); ?>
@@ -52,7 +52,7 @@
 			<label for="conf_password">Confirm Password</label>
                 <input type="password" class="form-control" name="conf_password">
                 <?php echo form_error('conf_password','<p class="help-block" style="color:red;">','</p>'); ?>
-            </div>
+            </div>-->
             <div class="form-group">
                 <label>Gender: </label>
                 <?php 
