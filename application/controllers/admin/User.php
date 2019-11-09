@@ -328,7 +328,8 @@ class User extends CI_Controller {
 				'user_type' => 'user',
 				'company' => $company,
 				'status' => 0,
-				'uid' => $rand
+				'uid' => $rand,
+				'avatar' => ''
             ); 
  
             if($this->form_validation->run() == true){ 

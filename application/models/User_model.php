@@ -68,9 +68,24 @@ class User_model extends CI_MODEL{
 			//print_r($str); die();
             return $update;
         }else{
-            return false;
+			$update = 'No User';
+			return $update;
+           // return false;
         }
     }
+	
+	public function updater($data, $id, $table){
+		if(!empty($data) && !empty($id)){
+            $update = $this->db->update($table, $data, array('id'=>$id));
+			$str = $this->db->last_query();
+			//print_r($str); die();
+            return $update;
+        }else{
+			$update = 'No User';
+			return $update;
+           // return false;
+        }
+	}
 	
 }
 

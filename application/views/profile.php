@@ -1,21 +1,21 @@
 <?php include 'header.php';?>
 
-<div class="container">
+<div class="container"><br>
   <div class="row">
-
-    <div class="main">
+	<div class="main col-sm-4">
 
       <h3>Profile</h3>
       
       <div class="login-or">
         <hr class="hr-or">
       </div>
-		<?php  
-						echo $this->session->flashdata('message');
-					?>
-					<?php $attributes = array("name" => "contactform");
-					echo form_open("login",$attributes);
-					?>
+		<div class="text-center">
+		<?php if($user['avatar'] != ''){?>
+	  <img class="rounded mx-auto d-block" alt="Avatar" width="100" src="<?php echo base_url();?>assets/avatar/<?php echo $user['avatar']; ?>">
+		<?php } else{?>
+		<img class="rounded mx-auto d-block" alt="Avatar" width="100" src="<?php echo base_url();?>assets/images/noprofile.png">
+		<?php } ?>
+	  </div>
       <form role="form" method="post">
 			
                                         <div class="form-group">
@@ -88,6 +88,46 @@
 			</form>
     
     </div>
-    
+    <div class="col-sm-8">
+		<h3>Upload Profile picture</h3>
+      
+					
+      <div class="login-or">
+        <hr class="hr-or">
+      </div>
+	  <?php echo $this->session->flashdata('message');	?>
+	  <form role="form" method="post" enctype="multipart/form-data">
+	  <div class="form-group">
+			<label for="avatar">Avatar</label>
+                <input type="file" name="avatar" class="form-control">
+                <?php echo form_error('avatar','<p class="help-block" style="color:red;">','</p>'); ?>
+            </div>
+		<div class="form-group">
+			<input type="submit" name="avatarSubmit" class="btn btn-primary" value="Upload Avatar">
+        </div>
+	  </form>
+	  
+	</div>
+	 
   </div>
 </div>
+
+<style>
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.circularsquare {
+  border-top-left-radius: 50% 50%;
+  border-top-right-radius: 50% 50%;
+  border-bottom-right-radius: 50% 50%;
+  border-bottom-left-radius: 50% 50%;
+}
+</style>

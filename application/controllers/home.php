@@ -307,6 +307,43 @@ class Home extends CI_Controller {
 			$data['user'] = $this->User_model->getuser($id);
 			$data['docs'] = $this->User_model->getdocs($id,$email);
 			$data['title'] = 'View Profile';
+			
+			if($this->input->post('avatarSubmit')){
+				
+				if (empty($_FILES['avatar']['name']))
+				{
+					$this->form_validation->set_rules('avatar', 'Image', 'required');
+				}
+				if($this->form_validation->run() == TRUE){
+					
+					//$this->load->view('profile', $data);
+					//echo "123"; die();
+				}else{
+					$image = time().'_'.trim($_FILES["avatar"]['name']);
+					$config['upload_path'] = './assets/avatar/';
+					$config['allowed_types']        = 'gif|jpg|png|pdf|doc';
+					$config['max_size']             = 100000;
+					$config['max_width']            = 100000;
+					$config['max_height']           = 100000;
+					$config['file_name'] = $image;
+					$this->load->library('upload', $config); 
+					$this->upload->do_upload('avatar');
+					$avatarData = array( 
+						'avatar' => $this->security->xss_clean($image)				
+					);
+					$table = 'users';
+						$update = $this->User_model->updater($avatarData,$id,$table);
+						//print_r($update);die();
+						if($update){
+						$this->session->set_flashdata('message', 'Avatar uploaded successfully');					
+							//$this->session->set_flashdata('message', 'Your account registration has been successful. Please login to your account.'); 
+							redirect('profile'); 
+						}else{ 
+							$this->session->set_flashdata('message', 'Invalid email or password');
+						}
+				}
+			}			
+			
 			$this->load->view('profile', $data); 
 		}else{
 			//$this->session->set_flashdata('message', 'Invalid email or password');
@@ -376,6 +413,9 @@ class Home extends CI_Controller {
 			//print_r($data['user']['company']);die();
 			$data['company'] = $this->User_model->getallcompanies($data['user']['company']);
 			$data['title'] = 'View Profile';
+			
+			
+			
 			$this->load->view('company', $data); 
 		}else{
 			//$this->session->set_flashdata('message', 'Invalid email or password');
@@ -391,7 +431,6 @@ class Home extends CI_Controller {
 		$sap = explode("=",$params);
 		$uid = $sap[1];
 		$data['user'] = $this->User_model->getuseruid($uid);
-		
 		if($this->input->post('signupSubmit')){ 
 			$this->form_validation->set_rules('password', 'Password', 'required'); 
 			$this->form_validation->set_rules('conf_password', 'Confirm password', 'required|matches[password]'); 
@@ -406,12 +445,12 @@ class Home extends CI_Controller {
 				
 			}else{
 				$update = $this->User_model->signup_updateuser($userData, $uid);
-				//print_r($update);die();
 				if($update){
                     $this->session->set_flashdata('message', 'Signup successfull.');
                     //redirect('admin/editproject/'.$id);
                 }else{
 					$this->session->set_flashdata('message', 'Error while updating.');
+					redirect('home');
                     //$data['error_msg'] = 'Some problems occurred, please try again.';
                 }
 			}

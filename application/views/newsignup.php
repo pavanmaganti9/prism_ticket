@@ -23,11 +23,12 @@
 						
 						</div>
 				<?php	}
+				if($user['email'] == ''){ echo "<meta http-equiv='refresh' content='0;url=home' />";}
 				?>
             <form role="form" method="post">
 			<div class="form-group">
 			<label for="password">Email</label>
-                <input type="text" class="form-control" disabled value="<?php echo $user['email']?>" >
+                <input type="text" class="form-control" disabled value="<?php echo $user['email'];?>" >
             </div>
 			<div class="form-group">
 			<label for="password">Password</label>

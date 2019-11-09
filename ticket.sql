@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2019 at 07:44 PM
+-- Generation Time: Nov 09, 2019 at 01:06 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `gender` enum('Male','Female') COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `avatar` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1=Active | 0=Inactive',
@@ -138,10 +139,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `uid`, `first_name`, `last_name`, `email`, `password`, `gender`, `phone`, `created`, `modified`, `status`, `user_type`, `company`) VALUES
-(1, '', 'Pavan', 'Maganti', 'pavanmaganti9@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '8099049823', '2019-10-14 20:42:08', '2019-10-14 20:42:08', 1, 'superadmin', ''),
-(8, '', 'Pavan', 'Maganti', 'pavanmaganti87@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '1234567890', '2019-10-27 19:31:30', '2019-10-27 19:31:30', 1, 'admin', 'Google'),
-(21, 'I5Q2ir6v', 'Pavan', 'Maganti', 'pavan_maganti@yahoo.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '8099049823', '2019-11-06 18:25:10', '2019-11-06 18:25:10', 1, 'user', 'Google');
+INSERT INTO `users` (`id`, `uid`, `first_name`, `last_name`, `email`, `password`, `gender`, `phone`, `avatar`, `created`, `modified`, `status`, `user_type`, `company`) VALUES
+(1, '', 'Pavan', 'Maganti', 'pavanmaganti9@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '8099049823', '', '2019-10-14 20:42:08', '2019-10-14 20:42:08', 1, 'superadmin', 'Yahoo'),
+(8, '', 'Pavan', 'Maganti', 'pavanmaganti87@gmail.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '1234567890', '', '2019-10-27 19:31:30', '2019-10-27 19:31:30', 1, 'admin', 'Google'),
+(21, 'I5Q2ir6v', 'Pavan', 'Maganti', 'pavan_maganti@yahoo.com', 'cd84d683cc5612c69efe115c80d0b7dc', 'Male', '8099049823', '', '2019-11-06 18:25:10', '2019-11-06 18:25:10', 1, 'user', 'Google');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
